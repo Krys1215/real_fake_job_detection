@@ -1,11 +1,14 @@
 import re
 import spacy
 import os
+import time
 import pickle
+import sklearn
 import streamlit as st
 import pandas as pd
 import numpy as np
 
+from sklearn.ensemble import RandomForestClassifier
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 def data_cleanups(df: pd.DataFrame):
@@ -95,20 +98,26 @@ def main():
     values_to_predict = tokenizer.texts_to_sequences(ready_to_predict['processed'].values)    # Tokenize the dataset
     values_to_predict = pad_sequences(values_to_predict, maxlen=250)  
     
+    with st.spinner('Processing the data...'):
+      time.sleep(1)
     st.write("After data processing:")
     
     st.dataframe(ready_to_predict['processed'])
+    
+    st.write("After tokenized: ")
     st.dataframe(values_to_predict)
     
     # read our models
     model_rf = read_rf()
-    model_lr = read_lr()
-    model_xgb = read_xgb()
+    # model_lr = read_lr()
+    # model_xgb = read_xgb()
     # then do the prediction
     rf_predict = model_rf.predict(values_to_predict)[0]
-    lr_predict = model_lr.predict(values_to_predict)[0]
-    xgb_predict = model_xgb.predict(values_to_predict)[0]
+    # lr_predict = model_lr.predict(values_to_predict)[0]
+    # xgb_predict = model_xgb.predict(values_to_predict)[0]
     # show the prediction
+    with st.spinner('Predicting...'):
+      time.sleep(1)
     st.success(f"The given job desciption is more likely to be: {'Fake' if rf_predict == 1 else 'Real'}")
     #st.warning(f"Logistic Regression: {lr_predict}")
     #st.info(f"XGBoost: {xgb_predict}")
