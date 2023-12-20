@@ -117,19 +117,19 @@ def main():
     st.dataframe(values_to_predict)
     
     # read our models
-    model = read_ensemble()
+    #model = read_ensemble()
     model_rf = read_rf()
     # model_lr = read_lr()
     # model_xgb = read_xgb()
     # then do the prediction
     rf_predict = model_rf.predict(values_to_predict)[0]
-    prediction = model.predict(values_to_predict)[0]
+    #prediction = model.predict(values_to_predict)[0]
     # lr_predict = model_lr.predict(values_to_predict)[0]
     # xgb_predict = model_xgb.predict(values_to_predict)[0]
     # show the prediction
     with st.spinner('Predicting...'):
       time.sleep(1)
-    st.success(f"The given job desciption is more likely to be: {'Fake' if prediction == 1 else 'Real'}")
+    st.success(f"The given job desciption is more likely to be: {'Fake' if rf_predict == 1 else 'Real'}")
     #st.warning(f"Logistic Regression: {lr_predict}")
     #st.info(f"XGBoost: {xgb_predict}")
     
